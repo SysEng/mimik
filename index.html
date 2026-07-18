@@ -3,16 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Silence Words</title>
+    <title resource-key="title-and-slogan">MIMIK | No words, just moves!</title>
 
-    <link rel="icon" type="image/png" href="assets/icon.png"/>
+    <link rel="icon" type="image/png" href="assets/icon.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-    <!-- <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"> -->
-    <!-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> -->
-    <!-- <link rel="manifest" href="/site.webmanifest"> -->
-    <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"> -->
-    <meta name="msapplication-TileColor" content="#ff0000">
-    <meta name="theme-color" content="#ff0000">
+    <!-- <meta name="msapplication-TileColor" content="#ff0000"> -->
+    <!-- <meta name="theme-color" content="#ff0000"> -->
+    <!-- <meta name="color-scheme" content="light dark"> -->
 
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/style.css">
@@ -20,110 +17,109 @@
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Silence Words">
+    <meta name="apple-mobile-web-app-title" content="MIMIK">
 </head>
 
 <body>
     <div class="page home hide">
         <div class="game-title">
             <h1 resource-key="title"></h1>
+            <h6 resource-key="slogan">
+                </h1>
         </div>
         <div class="footer">
             <div class="play-button button" resource-key="play" onclick="app.showPage(E_PAGES.game)">OYNA</div>
-            <!-- <div class="settings-button button">
-                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                    <g>
-                      <path d="M41.8,8H21.7A6.2,6.2,0,0,0,16,4a6,6,0,0,0-5.6,4H6.2A2.1,2.1,0,0,0,4,10a2.1,2.1,0,0,0,2.2,2h4.2A6,6,0,0,0,16,16a6.2,6.2,0,0,0,5.7-4H41.8A2.1,2.1,0,0,0,44,10,2.1,2.1,0,0,0,41.8,8ZM16,12a2,2,0,1,1,2-2A2,2,0,0,1,16,12Z"/>
-                      <path d="M41.8,22H37.7A6.2,6.2,0,0,0,32,18a6,6,0,0,0-5.6,4H6.2a2,2,0,1,0,0,4H26.4A6,6,0,0,0,32,30a6.2,6.2,0,0,0,5.7-4h4.1a2,2,0,1,0,0-4ZM32,26a2,2,0,1,1,2-2A2,2,0,0,1,32,26Z"/>
-                      <path d="M41.8,36H24.7A6.2,6.2,0,0,0,19,32a6,6,0,0,0-5.6,4H6.2a2,2,0,1,0,0,4h7.2A6,6,0,0,0,19,44a6.2,6.2,0,0,0,5.7-4H41.8a2,2,0,1,0,0-4ZM19,40a2,2,0,1,1,2-2A2,2,0,0,1,19,40Z"/>
-                    </g>
-                </svg>
-            </div> -->
         </div>
     </div>
     <div class="page settings hide"></div>
     <div class="page game hide">
         <div class="back-button button" onclick="app.showPage(E_PAGES.home);">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.7071 4.29289C12.0976 4.68342 12.0976 5.31658 11.7071 5.70711L6.41421 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H6.41421L11.7071 18.2929C12.0976 18.6834 12.0976 19.3166 11.7071 19.7071C11.3166 20.0976 10.6834 20.0976 10.2929 19.7071L3.29289 12.7071C3.10536 12.5196 3 12.2652 3 12C3 11.7348 3.10536 11.4804 3.29289 11.2929L10.2929 4.29289C10.6834 3.90237 11.3166 3.90237 11.7071 4.29289Z" fill="#000000" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.7071 4.29289C12.0976 4.68342 12.0976 5.31658 11.7071 5.70711L6.41421 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H6.41421L11.7071 18.2929C12.0976 18.6834 12.0976 19.3166 11.7071 19.7071C11.3166 20.0976 10.6834 20.0976 10.2929 19.7071L3.29289 12.7071C3.10536 12.5196 3 12.2652 3 12C3 11.7348 3.10536 11.4804 3.29289 11.2929L10.2929 4.29289C10.6834 3.90237 11.3166 3.90237 11.7071 4.29289Z" />
             </svg>
         </div>
         <div class="volume-button button" onclick="app.changeVolume();">
-            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="volume-on">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="volume-on">
                 <g>
-                  <path d="M26,11.9V36.1l-6.6-6L18.2,29H10V19h8.2l1.2-1.1,6.6-6M29,4a.9.9,0,0,0-.7.3L16.7,15H8a2,2,0,0,0-2,2V31a2,2,0,0,0,2,2h8.7L28.3,43.7a.9.9,0,0,0,.7.3,1,1,0,0,0,1-1V5a1,1,0,0,0-1-1Z"/>
-                  <path d="M36,42a2.1,2.1,0,0,1-1.6-.8,2,2,0,0,1,.4-2.8,18,18,0,0,0,0-28.8,2,2,0,1,1,2.4-3.2A22.4,22.4,0,0,1,46,24a22.4,22.4,0,0,1-8.8,17.6A1.7,1.7,0,0,1,36,42Z"/>
-                  <path d="M34,15.5v17a.5.5,0,0,0,.9.3,14,14,0,0,0,0-17.6A.5.5,0,0,0,34,15.5Z"/>
+                    <path d="M26,11.9V36.1l-6.6-6L18.2,29H10V19h8.2l1.2-1.1,6.6-6M29,4a.9.9,0,0,0-.7.3L16.7,15H8a2,2,0,0,0-2,2V31a2,2,0,0,0,2,2h8.7L28.3,43.7a.9.9,0,0,0,.7.3,1,1,0,0,0,1-1V5a1,1,0,0,0-1-1Z" />
+                    <path d="M36,42a2.1,2.1,0,0,1-1.6-.8,2,2,0,0,1,.4-2.8,18,18,0,0,0,0-28.8,2,2,0,1,1,2.4-3.2A22.4,22.4,0,0,1,46,24a22.4,22.4,0,0,1-8.8,17.6A1.7,1.7,0,0,1,36,42Z" />
+                    <path d="M34,15.5v17a.5.5,0,0,0,.9.3,14,14,0,0,0,0-17.6A.5.5,0,0,0,34,15.5Z" />
                 </g>
             </svg>
-            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="volume-off">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="volume-off">
                 <g>
-                  <path d="M26,11.8v6.4l4,4V5a1,1,0,0,0-1-1,1.1,1.1,0,0,0-.7.3l-8.4,7.8,2.8,2.8Z"/>
-                  <path d="M40.4,38.6l-32-32A2,2,0,0,0,5.6,9.4L11.2,15H8a2,2,0,0,0-2,2V31a2,2,0,0,0,2,2h8.7L28.3,43.7a1.1,1.1,0,0,0,.7.3,1,1,0,0,0,1-1V33.8l7.6,7.6a1.9,1.9,0,0,0,2.8,0A1.9,1.9,0,0,0,40.4,38.6ZM26,36.1l-6.6-6L18.2,29H10V19h5.2L26,29.8Z"/>
-                </g>
-            </svg>            
-        </div>
-        <div class="settings-button button">
-            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                <g>
-                  <path d="M41.8,8H21.7A6.2,6.2,0,0,0,16,4a6,6,0,0,0-5.6,4H6.2A2.1,2.1,0,0,0,4,10a2.1,2.1,0,0,0,2.2,2h4.2A6,6,0,0,0,16,16a6.2,6.2,0,0,0,5.7-4H41.8A2.1,2.1,0,0,0,44,10,2.1,2.1,0,0,0,41.8,8ZM16,12a2,2,0,1,1,2-2A2,2,0,0,1,16,12Z"/>
-                  <path d="M41.8,22H37.7A6.2,6.2,0,0,0,32,18a6,6,0,0,0-5.6,4H6.2a2,2,0,1,0,0,4H26.4A6,6,0,0,0,32,30a6.2,6.2,0,0,0,5.7-4h4.1a2,2,0,1,0,0-4ZM32,26a2,2,0,1,1,2-2A2,2,0,0,1,32,26Z"/>
-                  <path d="M41.8,36H24.7A6.2,6.2,0,0,0,19,32a6,6,0,0,0-5.6,4H6.2a2,2,0,1,0,0,4h7.2A6,6,0,0,0,19,44a6.2,6.2,0,0,0,5.7-4H41.8a2,2,0,1,0,0-4ZM19,40a2,2,0,1,1,2-2A2,2,0,0,1,19,40Z"/>
+                    <path d="M26,11.8v6.4l4,4V5a1,1,0,0,0-1-1,1.1,1.1,0,0,0-.7.3l-8.4,7.8,2.8,2.8Z" />
+                    <path d="M40.4,38.6l-32-32A2,2,0,0,0,5.6,9.4L11.2,15H8a2,2,0,0,0-2,2V31a2,2,0,0,0,2,2h8.7L28.3,43.7a1.1,1.1,0,0,0,.7.3,1,1,0,0,0,1-1V33.8l7.6,7.6a1.9,1.9,0,0,0,2.8,0A1.9,1.9,0,0,0,40.4,38.6ZM26,36.1l-6.6-6L18.2,29H10V19h5.2L26,29.8Z" />
                 </g>
             </svg>
         </div>
-        <label class="play-countdown"></label>
+        <div class="settings-button button" onclick="app.modal.show()">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path d="M41.8,8H21.7A6.2,6.2,0,0,0,16,4a6,6,0,0,0-5.6,4H6.2A2.1,2.1,0,0,0,4,10a2.1,2.1,0,0,0,2.2,2h4.2A6,6,0,0,0,16,16a6.2,6.2,0,0,0,5.7-4H41.8A2.1,2.1,0,0,0,44,10,2.1,2.1,0,0,0,41.8,8ZM16,12a2,2,0,1,1,2-2A2,2,0,0,1,16,12Z" />
+                    <path d="M41.8,22H37.7A6.2,6.2,0,0,0,32,18a6,6,0,0,0-5.6,4H6.2a2,2,0,1,0,0,4H26.4A6,6,0,0,0,32,30a6.2,6.2,0,0,0,5.7-4h4.1a2,2,0,1,0,0-4ZM32,26a2,2,0,1,1,2-2A2,2,0,0,1,32,26Z" />
+                    <path d="M41.8,36H24.7A6.2,6.2,0,0,0,19,32a6,6,0,0,0-5.6,4H6.2a2,2,0,1,0,0,4h7.2A6,6,0,0,0,19,44a6.2,6.2,0,0,0,5.7-4H41.8a2,2,0,1,0,0-4ZM19,40a2,2,0,1,1,2-2A2,2,0,0,1,19,40Z" />
+                </g>
+            </svg>
+        </div>
+        <label class="play-countdown count-down-animation"></label>
         <h1 class="word"></h1>
         <div class="countdown"></div>
-        <div class="next-button button" resource-key="next" onclick="app.nextWord();">
-            <!-- <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(270)" stroke="#000000">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.29289 8.29289C4.68342 7.90237 5.31658 7.90237 5.70711 8.29289L12 14.5858L18.2929 8.29289C18.6834 7.90237 19.3166 7.90237 19.7071 8.29289C20.0976 8.68342 20.0976 9.31658 19.7071 9.70711L12.7071 16.7071C12.3166 17.0976 11.6834 17.0976 11.2929 16.7071L4.29289 9.70711C3.90237 9.31658 3.90237 8.68342 4.29289 8.29289Z" fill="#000000"></path>
-                </g>
-            </svg> -->
-        </div>
+        <div class="next-button button" resource-key="next" onclick="app.nextWord();"></div>
     </div>
-    
-    <dialog id="myDialog">
-        <p>This is a native dialog box.</p>
-        <button id="closeBtn">Close</button>
+
+    <dialog class="modal modal-settings">
+        <div class="modal-title" resource-key="settings"></div>
+        <div class="modal-content">
+            <form name="option-form">
+                <div class="modal-item">
+                    <label for="option-lang" resource-key="lang"></label>
+                    <select id="option-lang" name="option-lang" onchange="app.onSettingChanged('lang', this);">
+                        <option value="tr" resource-key="turkish">Türkçe</option>
+                        <option value="en" resource-key="english">İngilizce</option>
+                    </select>
+                </div>
+                <div class="modal-item">
+                    <label for="option-countdown" resource-key="countdown"></label>
+                    <select id="option-countdown" name="option-countdown" onchange="app.onSettingChanged('countdown', this)">
+                        <option value="30" resource-key="seconds_30"></option>
+                        <option value="60" resource-key="seconds_60"></option>
+                    </select>
+                </div>
+                <div class="modal-item">
+                    <label for="option-theme" resource-key="theme"></label>
+                    <select id="option-theme" name="option-theme" onchange="app.onSettingChanged('theme', this)">
+                        <option value="light" resource-key="theme_light"></option>
+                        <option value="dark" resource-key="theme_dark"></option>
+                        <option value="default" resource-key="theme_default"></option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-button button" resource-key="close" onclick="app.modal.close();"></button>
+        </div>
+        <div class="float-notification" resource-key="changes_saved"></div>
     </dialog>
 
+    <script src="sw.js"></script>
     <script src="js/main.js"></script>
+
     <script>
-        const _modal = document.querySelector('#myDialog');
 
-        (function(){
-            window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
-            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-            document.onmousedown = function() { return false; }
-            document.onselectstart = function() { return false; }
-
-            app.init();    
-        })();
-
-        /*
-		const stopwatchEl = document.querySelector('.stopwatch'),
-            nextEl = document.querySelector('.next');
-
-        const stopwatch = createStopwatch((formattedTime) => {
-            stopwatchEl.textContent = formattedTime;
-        });
-
-        window.onload = () => {
-
-            stopwatchEl.innerText = '00:00';
-
-            const word = getRandomWord();
-            const titleEl = document.querySelector('.title');
-
-            titleEl.innerText = word.toLocaleUpperCase(lang);
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js");
         }
-		*/
-		
-        // stopwatch.start();
+
+        (function () {
+            window.addEventListener("contextmenu", function (e) { e.preventDefault(); })
+            document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+            // document.onmousedown = function () { return false; }
+            document.onselectstart = function () { return false; }
+
+            app.init();
+            document.addEventListener('visibilitychange', app.onVisibilityChanged);
+        })();
     </script>
 </body>
 

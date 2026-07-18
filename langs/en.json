@@ -1,10 +1,24 @@
 {
-  "title": "SILENCE WORDS",
+  "title": "MIMIK",
+  "slogan": "No talks, just moves!",
+  "title-and-slogan": "MIMIK | No talks, just moves!",
   "play": "PLAY",
   "sound": "SOUND",
   "countdown": "COUNT DOWN",
   "save": "Save",
   "cancel": "Cancel",
   "next": "NEXT",
-  "timesUp": "TIMES UP"
+  "timesUp": "TIMES UP",
+  "settings": "SETTINGS",
+  "lang": "LANGUAGE",
+  "seconds_30": "30 seconds",
+  "seconds_60": "60 seconds",
+  "english": "English",
+  "turkish": "Turkish",
+  "close": "CLOSE",
+  "theme": "THEME",
+  "theme_light": "Light",
+  "theme_dark": "Dark",
+  "theme_default": "System Default",
+  "changes_saved": "Changes saved!"
 }

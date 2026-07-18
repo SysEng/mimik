@@ -16,6 +16,10 @@ const E_AUDIOS = {
 };
 
 const app = {
+	langs: [
+		'tr',
+		'en'
+	],
 	words: [],
 	settings: {},
 	audio: [
@@ -31,7 +35,18 @@ const app = {
 		document.querySelector('.game'),
 		document.querySelector('.settings')
 	],
-	lang: (navigator.language || "tr").slice(0, 2),
+	staticElements: {
+		word: document.querySelector('.word'),
+		modal: document.querySelector('.modal'),
+		countdown: document.querySelector('.countdown'),
+		playCountdown: document.querySelector('.play-countdown'),
+		settings: {
+			lang: document.querySelector('.modal-settings #option-lang'),
+			countdown: document.querySelector('.modal-settings #option-countdown'),
+			theme: document.querySelector('.modal-settings #option-theme'),
+			floatNotification: document.querySelector('.modal-settings .float-notification')
+		},
+	},
 	storageManager: {
 		nameSpace: 'kelimator',
 		getKey(key) {
@@ -62,27 +77,39 @@ const app = {
 		}
 	},
 	timer: {
-		elapsed: 0,
-		_end: -1,
+		end: -1,
 		_onUpdate: null,
 		_rafId: null,
 		_start: null,
 		_running: false,
+		_elapsedSecond: -1,
+		_elapsedTime: 0,
 		init(end, onUpdate) {
-			this.elapsed = 0;
+			this.reset();
 
-			this._end = end;
+			this.end = end;
 			this._onUpdate = onUpdate;
 
 			this._running = true;
-			this._start = this._now();
 
-			this._loop();
+			this._rafId = requestAnimationFrame(this._loop.bind(this));
+		},
+		pause() {
+			if (!this._running) return;
+			this._running = false;
+
+			cancelAnimationFrame(this._rafId);
+		},
+		resume() {
+			this._running = true;
+			this._start = null;
+			this._rafId = requestAnimationFrame(this._loop.bind(this));
 		},
 		reset() {
-			this.elapsed = 0;
+			this.end = -1;
+			this._elapsedSecond = -1;
+			this._elapsedTime = 0;
 
-			this._end = -1;
 			this._start = null;
 			this._onUpdate = null;
 			this._running = false;
@@ -90,16 +117,19 @@ const app = {
 			cancelAnimationFrame(this._rafId);
 		},
 		_loop(delta) {
-			if (!app.timer._running) return;
+			if (!this._running) return;
 
-			if (!delta)
-				delta = app.timer._now();
+			if (!this._start)
+				this._start = delta - this._elapsedTime;
 
-			const elapsed = delta - app.timer._start;
+			this._elapsedTime = delta - this._start;
+			const second = Math.floor(this._elapsedTime / 1000);
 
-			if (app.timer._onUpdate) app.timer._onUpdate(elapsed);
+			if (this._onUpdate && this._elapsedSecond != second) this._onUpdate(second);
 
-			app.timer._rafId = requestAnimationFrame(app.timer._loop);
+			this._elapsedSecond = second;
+
+			this._rafId = requestAnimationFrame(this._loop.bind(this));
 		},
 		_now() {
 			return performance.now();
@@ -107,6 +137,52 @@ const app = {
 		_getTime() {
 			return this.now() - this.start;
 		},
+	},
+	modal: {
+		show() {
+			app.staticElements.modal.showModal();
+			app.timer.pause();
+			app.loadChanges();
+		},
+		close() {
+			app.staticElements.modal.close();
+			app.timer.resume();
+		},
+		isOpen() {
+			return app.staticElements.modal.open;
+		}
+	},
+	onSettingChanged: async (key, el) => {
+		if (key == 'lang')
+			app.settings.lang = el.value;
+
+		if (key == 'countdown')
+			app.settings.countdown = el.value;
+
+		if (key == 'theme')
+			app.settings.theme = el.value;
+
+		app.playAnimation(app.staticElements.settings.floatNotification, 'fade-in-down');
+
+		app.storageManager.set('settings', app.settings);
+
+		app.resources = await app.xhr(`langs/${app.settings.lang}.json`);
+		app.updateResources();
+	},
+	loadChanges: () => {
+		app.staticElements.settings.lang.value = app.settings.lang || 'tr';
+		app.staticElements.settings.theme.value = app.settings.theme || 'light';
+		app.staticElements.settings.countdown.value = app.settings.countdown || 30;
+
+		app.staticElements.settings.floatNotification.classList.remove('fade-in-down');
+	},
+	onVisibilityChanged: () => {
+		if (document.visibilityState == 'hidden') {
+			app.timer.pause();
+		} else {
+			if (!app.modal.isOpen())
+				app.timer.resume();
+		}
 	},
 	play(audio) {
 		if (app.settings.volume == 'on')
@@ -136,30 +212,43 @@ const app = {
 		this.updatePageUI(this.settings.page);
 	},
 	async init() {
-		const resources = await this.xhr(`langs/${this.lang}.json`);
+		const lang = (navigator.language || "tr").slice(0, 2);
+
+		if (app.langs.indexOf(lang) == -1)
+			lang = 'en';
+
 		this.settings = await this.storageManager.get('settings') || {};
 
-		if (resources.title) {
-			this.resources = resources;
-			this.updateResources();
+		if (!this.settings.theme)
+			this.settings.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
-			if (!this.settings.page)
-				this.settings.page = E_PAGES.home;
+		if (!this.settings.page)
+			this.settings.lang = lang;
 
-			if (!this.settings.volume)
-				this.settings.volume = 'on';
+		if (!this.settings.page)
+			this.settings.page = E_PAGES.home;
 
-			if (!this.settings.countdown)
-				this.settings.countdown = 60;
+		if (!this.settings.volume)
+			this.settings.volume = 'on';
 
-			this.showPage(this.settings.page);
-		} else {
-			alert('error, resource cannot loaded');
-		}
+		if (!this.settings.countdown)
+			this.settings.countdown = 30;
+
+		this.resources = await this.xhr(`langs/${this.settings.lang}.json`);
+		this.updateResources();
+
+		this.showPage(this.settings.page);
+
 	},
 	updateResources() {
 		const resourceKeys = document.querySelectorAll('[resource-key]');
 		resourceKeys.forEach(x => x.textContent = this.resources[`${x.attributes['resource-key'].value}`]);
+
+		if (app.settings.theme == 'default'){
+			document.documentElement.removeAttribute('data-theme');
+		}else{
+			document.documentElement.setAttribute('data-theme', app.settings.theme);
+		}		
 	},
 	async updatePageUI(pageIndex) {
 		const page = this.pages[pageIndex];
@@ -169,7 +258,7 @@ const app = {
 		}
 
 		if (this.settings.page == E_PAGES.game) {
-			this.words = await this.xhr(`assets/words.json`);
+			this.words = await this.xhr(`assets/words.${app.settings.lang}.json`);
 			page.querySelector('.volume-on').style.display = this.settings.volume == 'on' ? 'block' : 'none';
 			page.querySelector('.volume-off').style.display = this.settings.volume == 'on' ? 'none' : 'block';
 
@@ -194,90 +283,61 @@ const app = {
 		return this.words[randomIndex];
 	},
 	nextWord() {
-		const word = this.getRandomWord();
-		const page = this.pages[E_PAGES.game];
+		app.hide(app.staticElements.word);
+		app.show(app.staticElements.playCountdown);
+		app.staticElements.countdown.classList.remove('danger');
 
-		const wordEl = page.querySelector('.word');
-		const countDownEl = page.querySelector('.countdown');
-		const playCountDownEl = page.querySelector('.play-countdown');
-
-		wordEl.classList.add('hide');
-		countDownEl.classList.remove('danger');
-		playCountDownEl.classList.remove('hide');
-
-		wordEl.innerText = '';
-		countDownEl.innerText = '';
-		playCountDownEl.innerText = '';
+		app.staticElements.word.innerText = '';
+		app.staticElements.countdown.innerText = '';
+		app.staticElements.playCountdown.innerText = '';
 
 		this.timer.init(3, this.onBeforePlayed);
 	},
-	onBeforePlayed(elapsed) {
-		const page = app.pages[E_PAGES.game];
-		const playCountDownEl = page.querySelector('.play-countdown');
+	onBeforePlayed(elapsedSecond) {
+		let remained = app.timer.end - elapsedSecond;
+		if (remained > 0) {
 
-		const second = Math.floor(elapsed / 1000);
+			app.playAnimation(app.staticElements.playCountdown, 'count-down-animation');
+			app.staticElements.playCountdown.textContent = `${remained}`;
 
-		if (app.timer.elapsed < second) {
-			app.timer.elapsed = second;
+			app.play(E_AUDIOS.countdown);
+		} else {
+			app.hide(app.staticElements.playCountdown);
+			app.play(E_AUDIOS.play);
 
-			let remained = 4 - app.timer.elapsed;
-
-			if (remained > 0) {
-				playCountDownEl.textContent = `${remained}`;
-				app.play(E_AUDIOS.countdown);
-			} else {
-				remained = 0;
-
-				app.hide(playCountDownEl);
-				app.play(E_AUDIOS.play);
-
-				app.timer.reset();
-
-				app.fillWord();
-			}
+			app.fillWord();
 		}
 	},
-	onPlayed(elapsed) {
-		const page = app.pages[E_PAGES.game];
-		const playCountDownEl = page.querySelector('.countdown');
+	onPlayed(elapsedSecond) {
+		let remained = app.timer.end - elapsedSecond;
 
-		const second = Math.floor(elapsed / 1000);
+		app.playAnimation(app.staticElements.countdown, 'count-down-animation');
+		app.staticElements.countdown.textContent = `${remained}`;
 
-		if (app.timer.elapsed < second) {
-			app.timer.elapsed = second;
+		if (remained > 0) {
+			if (remained <= 5)
+				app.play(E_AUDIOS.countdown);
+		} else {
+			app.play(E_AUDIOS.end);
+			app.staticElements.countdown.textContent = app.resources.timesUp;
 
-			let remained = app.settings.countdown - app.timer.elapsed;
-			if (remained < 0)
-				remained = 0;
-
-			playCountDownEl.textContent = `${remained}`;
-
-			if (remained > 0) {
-				if (remained <= 5)
-					app.play(E_AUDIOS.countdown);
-			} else {
-				app.play(E_AUDIOS.end);
-				playCountDownEl.textContent = app.resources.timesUp;
-
-				app.timer.reset();
-				// TODO: RESET SONRASI, countdown gizle, kelimeyi gizle, 
-			}
+			app.timer.reset();
+			// TODO: RESET SONRASI, countdown gizle, kelimeyi gizle, 
 		}
 	},
 	fillWord() {
-		const page = app.pages[E_PAGES.game];
 		const word = this.getRandomWord();
-		const wordEl = page.querySelector('.word');
 
-		app.show(wordEl);
-		wordEl.innerText = `${word}`;
+		app.show(app.staticElements.word);
+		app.staticElements.word.innerText = `${word}`;
 
-		this.timer.init(this.settings.countDown, this.onPlayed);
+		this.timer.init(this.settings.countdown, this.onPlayed);
 	},
-	hide(el) {
-		el.classList.add('hide');
-	},
-	show(el) {
-		el.classList.remove('hide');
+	hide: (el) => el.classList.add('hide'),
+	show: (el) => el.classList.remove('hide'),
+	playAnimation: (el, animationClass) => {
+		el.classList.remove(animationClass);
+		void el.offsetHeight;
+		el.classList.add(animationClass);
 	}
 };

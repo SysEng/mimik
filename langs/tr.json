@@ -1,10 +1,24 @@
 {
-  "title": "SESSİZ KELİMELER",
+  "title": "MİMİK",
+  "slogan": "Konuşmak yok, hareket çok!",
+  "title-and-slogan": "MİMİK | Konuşmak yok, hareket çok!",
   "play": "OYNA",
   "sound": "SES",
   "countdown": "SÜRE",
   "save": "Kaydet",
   "cancel": "Vazgeç",
   "next": "SONRAKİ",
-  "timesUp": "SÜRE DOLDU"
+  "timesUp": "SÜRE DOLDU",
+  "settings": "AYARLAR",
+  "lang": "DİL",
+  "seconds_30": "30 saniye",
+  "seconds_60": "60 saniye",
+  "english": "İngilizce",
+  "turkish": "Türkçe",
+  "close": "KAPAT",
+  "theme": "TEMA",
+  "theme_light": "Açık",
+  "theme_dark": "Koyu",
+  "theme_default": "Sistem Varsayılan",
+  "changes_saved": "Değişiklikler kaydedildi"
 }

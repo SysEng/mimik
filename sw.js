@@ -1,5 +1,7 @@
-var cacheName = 'sessiz_kelimeler';
-var filesToCache = [
+const CACHE_VERSION = 'v1';
+const CACHE_NAME = `mimik_game_${CACHE_VERSION}`;
+
+const CACHE_RESOURCES = [
     '/',
     '/index.html',
     '/css/style.css',
@@ -7,23 +9,48 @@ var filesToCache = [
     'langs/en.json',
     'langs/tr.json',
     'icon.png',
-    '/assets/words.json',
+    '/assets/words_tr.json',
+    '/assets/words_en.json',
 ];
 
 self.addEventListener('install', function (e) {
     e.waitUntil(
-        caches.open(cacheName)
+        caches.open(CACHE_NAME)
             .then(function (cache) {
-                return cache.addAll(filesToCache);
+                return cache.addAll(CACHE_RESOURCES);
             })
     );
 });
 
-/* Serve cached content when offline */
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        (async () => {
+            const names = await caches.keys();
+            await Promise.all(
+                names.map((name) => {
+                    if (name !== CACHE_NAME)
+                        return caches.delete(name);
+
+                    return undefined;
+                }),
+            );
+
+            await clients.claim();
+        })(),
+    );
+});
+
+
 self.addEventListener('fetch', function (e) {
+    if (e.request.mode === 'navigate') {
+        e.respondWith(caches.match('/'));
+        return;
+    }
+
     e.respondWith(
-        caches.match(e.request).then(function (response) {
-            return response || fetch(e.request);
-        })
+        caches.match(e.request)
+            .then(function (response) {
+                return response || fetch(e.request);
+            })
     );
 });
