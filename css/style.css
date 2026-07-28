@@ -40,6 +40,8 @@ html[data-theme="light"] {
 	user-select: none;
 	-webkit-user-select: none;
 	color: var(--text-color);
+	overscroll-behavior: none;
+	-webkit-overflow-scrolling: touch;
 }
 
 *:focus,
@@ -68,7 +70,6 @@ body {
 	box-sizing: border-box;
 	height: 100%;
 	font-family: 'RobotoSlab', serif;
-	/* font-family: 'Roboto-Slab', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; */
 }
 
 body {
@@ -87,31 +88,6 @@ body,
 	margin: 0;
 	padding: 0;
 	width: 100%;
-}
-
-
-@media (display-mode: standalone) {
-	.install-container {
-		display: none !important;
-	}
-
-	.login-container {
-		display: flex !important;
-	}
-}
-
-@media (display-mode: browser) {
-	body {
-		/* background: url('/Public/img/line/ios-startup.png'); */
-	}
-
-	.install-container {
-		display: flex !important;
-	}
-
-	.login-container {
-		display: none !important;
-	}
 }
 
 .danger {
@@ -192,19 +168,20 @@ body,
 
 /* game page*/
 .game .word {
-	font-size: 16vw;
+	font-size: 14vw;
 	text-transform: uppercase;
-	text-shadow: 10px 10px var(--text-color-alt);
-	-webkit-text-shadow: 10px 10px var(--text-color-alt);
-	-moz-text-shadow: 10px 10px var(--text-color-alt);
+	text-shadow: 1vw 1vw var(--text-color-alt);
+	-webkit-text-shadow: 1vw 1vw var(--text-color-alt);
+	-moz-text-shadow: 1vw 1vw var(--text-color-alt);
+	text-align: center;
 }
 
 .game .play-countdown {
 	/* font-size: 80vw; */
 	font-size: 30rem;
-	text-shadow: 10px 10px var(--text-color-alt);
-	-webkit-text-shadow: 10px 10px var(--text-color-alt);
-	-moz-text-shadow: 10px 10px var(--text-color-alt);
+	text-shadow: 1vw 1vw var(--text-color-alt);
+	-webkit-text-shadow: 1vw 1vw var(--text-color-alt);
+	-moz-text-shadow: 1vw 1vw var(--text-color-alt);
 }
 
 .game .count-down-animation {
@@ -270,7 +247,8 @@ body,
 .modal {
 	top: 50%;
 	left: 50%;
-	width: 60vw;
+	width: clamp(340px, 80vw, 50%);
+	height: clamp(360px, 40vw, 60%);
 	position: absolute;
 	border-radius: 2rem;
 	transform: translate(-50%, -50%);
@@ -302,16 +280,7 @@ body,
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 	text-align: right;
 	background-color: var(--background);
-}
-
-.modal-item select:hover {
-	border-color: #007bff;
-}
-
-.modal-item select:focus {
-	outline: none;
-	border-color: #007bff;
-	box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+	text-align-last: right;
 }
 
 .modal-item label {
@@ -320,6 +289,7 @@ body,
 
 .modal-footer {
 	border-top: 1px solid #b4b4b4;
+	border-top: 1px solid var(--background);
 	margin: 5% 00;
 	padding: 5% 0 0;
 	display: flex;

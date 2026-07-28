@@ -1,16 +1,16 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v29072026';
 const CACHE_NAME = `mimik_game_${CACHE_VERSION}`;
 
 const CACHE_RESOURCES = [
-    '/',
     '/index.html',
     '/css/style.css',
     '/js/main.js',
     'langs/en.json',
     'langs/tr.json',
     'icon.png',
-    '/assets/words_tr.json',
-    '/assets/words_en.json',
+    '/assets/RobotoSlab-Regular.woff2',
+    '/assets/words.tr.json',
+    '/assets/words.en.json',
 ];
 
 self.addEventListener('install', function (e) {

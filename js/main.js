@@ -3,16 +3,15 @@
 const E_PAGES = {
 	home: 0,
 	game: 1,
-	settings: 2
 };
 
 const E_AUDIOS = {
-	countdown: 0,
-	play: 1,
-	ending: 2,
-	end: 3,
-	success: 4,
-	fail: 5
+	countdown: 'countdown',
+	play: 'play',
+	ending: 'ending',
+	end: 'end',
+	success: 'success',
+	fail: 'fail'
 };
 
 const app = {
@@ -22,14 +21,6 @@ const app = {
 	],
 	words: [],
 	settings: {},
-	audio: [
-		new Audio('assets/countdown.wav'),
-		new Audio('assets/play.wav'),
-		new Audio('assets/ending.wav'),
-		new Audio('assets/end.wav'),
-		// new Audio('assets/success.wav'),
-		// new Audio('assets/fail.wav'),
-	],
 	pages: [
 		document.querySelector('.home'),
 		document.querySelector('.game'),
@@ -46,6 +37,43 @@ const app = {
 			theme: document.querySelector('.modal-settings #option-theme'),
 			floatNotification: document.querySelector('.modal-settings .float-notification')
 		},
+	},
+	audioManager: {
+		_ctx: null,
+		_profiles: [],
+		init() {
+			this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+			this._profiles = {
+				countdown: { frequency: 880, duration: .3, type: 'square' },
+				ending: { frequency: 440, duration: .3, type: 'triangle' },
+				play: { frequency: 1200, duration: .8, type: 'square' },
+				end: { frequency: 1800, duration: 1.0, type: 'triangle' }
+			};
+		},
+		async play(soundName) {
+			if (this._ctx.state === 'suspended') {
+				await this._ctx.resume();
+			}
+
+			const profile = this._profiles[soundName];
+			if (!profile) return;
+
+			const oscillator = this._ctx.createOscillator();
+			const gainNode = this._ctx.createGain();
+
+			oscillator.type = profile.type;
+			oscillator.frequency.setValueAtTime(profile.frequency, this._ctx.currentTime);
+
+			gainNode.gain.setValueAtTime(0.3, this._ctx.currentTime);
+			gainNode.gain.exponentialRampToValueAtTime(0.0001, this._ctx.currentTime + profile.duration);
+			
+			oscillator.connect(gainNode);
+			gainNode.connect(this._ctx.destination);
+
+			oscillator.start(this._ctx.currentTime);
+			oscillator.stop(this._ctx.currentTime + profile.duration);
+		}
 	},
 	storageManager: {
 		nameSpace: 'kelimator',
@@ -167,6 +195,8 @@ const app = {
 		app.storageManager.set('settings', app.settings);
 
 		app.resources = await app.xhr(`langs/${app.settings.lang}.json`);
+		app.words = await app.xhr(`assets/words.${app.settings.lang}.json`);
+
 		app.updateResources();
 	},
 	loadChanges: () => {
@@ -180,13 +210,13 @@ const app = {
 		if (document.visibilityState == 'hidden') {
 			app.timer.pause();
 		} else {
-			if (!app.modal.isOpen())
+			if (!app.modal.isOpen() && app.settings.page == E_PAGES.game)
 				app.timer.resume();
 		}
 	},
 	play(audio) {
 		if (app.settings.volume == 'on')
-			app.audio[audio].play();
+			app.audioManager.play(audio);
 	},
 	async xhr(path) {
 		try {
@@ -214,6 +244,8 @@ const app = {
 	async init() {
 		const lang = (navigator.language || "tr").slice(0, 2);
 
+		this.audioManager.init();
+
 		if (app.langs.indexOf(lang) == -1)
 			lang = 'en';
 
@@ -222,7 +254,7 @@ const app = {
 		if (!this.settings.theme)
 			this.settings.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
-		if (!this.settings.page)
+		if (!this.settings.lang)
 			this.settings.lang = lang;
 
 		if (!this.settings.page)
@@ -244,18 +276,16 @@ const app = {
 		const resourceKeys = document.querySelectorAll('[resource-key]');
 		resourceKeys.forEach(x => x.textContent = this.resources[`${x.attributes['resource-key'].value}`]);
 
-		if (app.settings.theme == 'default'){
+		document.documentElement.lang = app.settings.lang;
+
+		if (app.settings.theme == 'default') {
 			document.documentElement.removeAttribute('data-theme');
-		}else{
+		} else {
 			document.documentElement.setAttribute('data-theme', app.settings.theme);
-		}		
+		}
 	},
 	async updatePageUI(pageIndex) {
 		const page = this.pages[pageIndex];
-
-		if (this.settings.page == E_PAGES.home) {
-
-		}
 
 		if (this.settings.page == E_PAGES.game) {
 			this.words = await this.xhr(`assets/words.${app.settings.lang}.json`);
@@ -263,10 +293,6 @@ const app = {
 			page.querySelector('.volume-off').style.display = this.settings.volume == 'on' ? 'none' : 'block';
 
 			this.nextWord();
-		}
-
-		if (this.settings.page == E_PAGES.settings) {
-
 		}
 	},
 	changeVolume() {
@@ -316,7 +342,7 @@ const app = {
 
 		if (remained > 0) {
 			if (remained <= 5)
-				app.play(E_AUDIOS.countdown);
+				app.play(E_AUDIOS.ending);
 		} else {
 			app.play(E_AUDIOS.end);
 			app.staticElements.countdown.textContent = app.resources.timesUp;

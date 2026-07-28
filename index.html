@@ -1,31 +1,35 @@
 <!doctype html>
-<html lang="tr">
+<html>
 
 <head>
     <meta charset="utf-8">
     <title resource-key="title-and-slogan">MIMIK | No words, just moves!</title>
 
-    <link rel="icon" type="image/png" href="assets/icon.png" />
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-    <!-- <meta name="msapplication-TileColor" content="#ff0000"> -->
-    <!-- <meta name="theme-color" content="#ff0000"> -->
-    <!-- <meta name="color-scheme" content="light dark"> -->
+    <link rel="icon" type="image/png" href="assets/img/icon.png" />
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="MIMIK">
+
+    <script>
+        (function () {
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("sw.js");
+            }
+        })()
+    </script>
 </head>
 
 <body>
     <div class="page home hide">
         <div class="game-title">
             <h1 resource-key="title"></h1>
-            <h6 resource-key="slogan">
-                </h1>
+            <h6 resource-key="slogan"></h6>
         </div>
         <div class="footer">
             <div class="play-button button" resource-key="play" onclick="app.showPage(E_PAGES.game)">OYNA</div>
@@ -69,6 +73,7 @@
     </div>
 
     <dialog class="modal modal-settings">
+        <button autofocus style="position: absolute; opacity: 0; pointer-events: none;"></button>
         <div class="modal-title" resource-key="settings"></div>
         <div class="modal-content">
             <form name="option-form">
@@ -106,11 +111,6 @@
     <script src="js/main.js"></script>
 
     <script>
-
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js");
-        }
-
         (function () {
             window.addEventListener("contextmenu", function (e) { e.preventDefault(); })
             document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
