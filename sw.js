@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v29072026';
+const CACHE_VERSION = 'v31072026';
 const CACHE_NAME = `mimik_game_${CACHE_VERSION}`;
 
 const CACHE_RESOURCES = [
@@ -43,7 +43,7 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', function (e) {
     if (e.request.mode === 'navigate') {
-        e.respondWith(caches.match('/'));
+        e.respondWith(caches.match('/index.html'));
         return;
     }
 

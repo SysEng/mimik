@@ -1,9 +1,8 @@
 {
   "short_name": "MİMİK",
   "name": "MİMİK",
-  "description": "Simple as it is, one word - one minute, try to tell!",
-  "start_url": "/",
-  "id": "mimik.syseng.app",
+  "description": "No talks, only moves!",
+  "start_url": ".",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#fff",
