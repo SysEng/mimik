@@ -1,0 +1,13 @@
+# Bağımlılıklar
+node_modules/
+dist/
+build/
+
+# Tarayıcı ve Sistem Dosyaları
+.DS_Store
+Thumbs.db
+
+# Geliştirici Ortamı Ayarları
+.vscode/
+.idea/
+.env
